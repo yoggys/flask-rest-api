@@ -6,7 +6,7 @@ import logging
 
 from os import getcwd, makedirs
 
-path = getcwd()+"/data"
+path = getcwd()+"/app-data"
 makedirs(path, exist_ok=True)
 
 logging.basicConfig(
