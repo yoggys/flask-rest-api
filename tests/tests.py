@@ -1,4 +1,4 @@
-### ignore this file in production, only for testing puposes ###
+### ignore this file in production, only for routing/models testing puposes ###
 
 import requests as req
 
@@ -16,6 +16,7 @@ for ii in range(1, 100):
         exit(1)
 
     data = data[0]
+    print(data.text)
 
     if  data.status_code == 200:
         id = data.json()['data']['id']

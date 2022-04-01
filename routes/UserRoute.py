@@ -7,9 +7,9 @@ from core import app
 
 def user_parser(need=False):
     user_args = reqparse.RequestParser()
-    user_args.add_argument("email", type=str, required=need)
-    user_args.add_argument("username", type=str, required=need)
-    user_args.add_argument("password", type=str, required=need)
+    user_args.add_argument("email", type=str, required=need, location=['values'])
+    user_args.add_argument("username", type=str, required=need, location=['values'])
+    user_args.add_argument("password", type=str, required=need, location=['values'])
     return user_args
 
 class UserParent(Resource):
@@ -22,7 +22,6 @@ class UserParent(Resource):
             created_at=datetime.now(),
         )
         app.db.session.add(obj)
-        
         try:
             app.db.session.commit()
         except IntegrityError:
