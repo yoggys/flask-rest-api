@@ -1,7 +1,7 @@
 # Flask REST API template
 
 ## Project setup
-Tested on `Python 3.10.4`, if any error is encountered please [download](https://www.python.org/downloads/release/python-3104/) and run project using this version.
+Tested on Windows 10 wih `Python 3.10.4`, if any error is encountered please [download](https://www.python.org/downloads/release/python-3104/) and run project using this version.
 
 ```bash
 git clone https://github.com/yoggys/flask-rest-api
