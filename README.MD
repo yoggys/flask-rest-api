@@ -34,7 +34,7 @@ python3 run.py --dev --host localhost --port 8080
 ## Tests
 
 ```bash
-python3 -m pytest ./tests/tests.py
+python3 run.py --dev & python3 -m pytest ./tests/tests.py
 ```
 
 ### Output
