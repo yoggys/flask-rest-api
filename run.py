@@ -1,7 +1,6 @@
-import asyncio
-
 from core.setup import Server
 from core.utils import parse_args
+
 
 def main():
    args = parse_args()

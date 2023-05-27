@@ -1,12 +1,30 @@
 import asyncio
 import random
+import subprocess
 from secrets import token_hex
 
 import aiohttp
 import pytest
 
-ENDPOINT = "http://127.0.0.1:5000/api/v1/users"
-ENDPOINT_ENTRY = "http://127.0.0.1:5000/api/v1/users/{}"
+
+class TestArgs:
+    dev = True
+    host = "127.0.0.1"
+    port = 5000
+    
+args = TestArgs()
+def run_server():
+    return subprocess.Popen(["python", "run.py"], shell=True)
+
+process = run_server()
+
+@pytest.fixture(scope='session')
+def my_cleanup_fixture(request):
+    process.terminate()
+    process.wait()
+    
+ENDPOINT = "http://{}:{}/api/v1/users".format(args.host, args.port)
+ENDPOINT_ENTRY = ENDPOINT + "/{}"
 
 # Helper functions
 async def getAll(cs: aiohttp.ClientSession):
@@ -49,6 +67,7 @@ async def test_delete_all():
     async with aiohttp.ClientSession() as cs:
         await deleteAll(cs)
         data = await getAll(cs)
+        print(data)
         
         assert len(data.get("data", [])) == 0
         
