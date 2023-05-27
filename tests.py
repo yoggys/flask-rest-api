@@ -16,7 +16,7 @@ class TestArgs:
     
 args = TestArgs()
 def run_server():
-    return subprocess.Popen(["python3", "run.py"], cwd=os.getcwd(), shell=True)
+    return subprocess.Popen(["python", "run.py"], cwd=os.getcwd(), shell=True)
 
 process = run_server()
 time.sleep(3)
