@@ -1,4 +1,5 @@
 import asyncio
+import os
 import random
 import subprocess
 from secrets import token_hex
@@ -14,7 +15,7 @@ class TestArgs:
     
 args = TestArgs()
 def run_server():
-    return subprocess.Popen(["python", "run.py"], shell=True)
+    return subprocess.Popen(["python", "run.py"], cwd=os.getcwd(), shell=True)
 
 process = run_server()
 
