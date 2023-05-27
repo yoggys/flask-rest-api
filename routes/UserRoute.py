@@ -1,9 +1,12 @@
-from models.UserModel import UserModel, schema, schemas
-from flask_restful import Resource, reqparse
 from datetime import datetime
-from flask import jsonify
+
+from flask import jsonify, Response
+from flask_restful import Resource, reqparse
 from sqlalchemy.exc import IntegrityError
+
 from core import app
+from models.UserModel import UserModel, schema, schemas
+
 
 def user_parser(need=False):
     user_args = reqparse.RequestParser()
@@ -12,67 +15,82 @@ def user_parser(need=False):
     user_args.add_argument("password", type=str, required=need, location=['values'])
     return user_args
 
-class UserParent(Resource):
-    def post(self):
+class User(Resource):
+    def post(self) -> Response:
         args = user_parser(True).parse_args()
-        obj = UserModel(
+        
+        user = UserModel(
             email=args["email"], 
             username=args["username"], 
             password=args["password"],
             created_at=datetime.now(),
         )
-        app.db.session.add(obj)
+        app.db.session.add(user)
+        
         try:
             app.db.session.commit()
         except IntegrityError:
             return {"message": "User with same email or username already exists"}, 409
 
-        return jsonify(data = schema.dump(obj))
+        return jsonify(data = schema.dump(user))
 
-    def get(self):
+    def get(self) -> Response:
         args = user_parser(False).parse_args()
-        filter_data = {key: value for (key, value) in args.items() if value}
-        obj = UserModel.query.filter_by(**filter_data).all()
         
-        return jsonify(data = schemas.dump(obj))
+        filter_params = { key: value for (key, value) in args.items() if value }
+        user = UserModel.query.filter_by(**filter_params).all()
+        
+        return jsonify(data = schemas.dump(user))
     
-class User(Resource):
-    def find(self, id):
+    def delete(self) -> Response:
+        users = UserModel.query.all()
+        for user in users:
+            app.db.session.delete(user)
+        app.db.session.commit()
+        
+        return jsonify(data = schemas.dump(users))
+    
+class UserEntry(Resource):
+    def find(self, id: int) -> UserModel:
         return UserModel.query.get_or_404(id, description=f"User not found (id={id})")
 
-    def get(self, id):
-        obj = self.find(id)
-        return jsonify(data = schema.dump(obj))
+    def get(self, id: int) -> Response:
+        user = self.find(id)
+        return jsonify(data = schema.dump(user))
     
-    def put(self, id):
+    def put(self, id: int) -> Response:
+        user = self.find(id)
+        
         args = user_parser(True).parse_args()
-        obj = self.find(id)
         for key in args:
-            setattr(obj, key, args[key])
+            setattr(user, key, args[key])
 
         try:
             app.db.session.commit()
         except IntegrityError:
             return {"message": "User with same email or username already exists"}, 409
 
-        return jsonify(data = schema.dump(obj))
+        return jsonify(data = schema.dump(user))
 
-    def delete(self, id):
-        obj = self.find(id)
-        app.db.session.delete(obj)
-        app.db.session.commit()
-        return jsonify(data = schema.dump(obj))
+    def patch(self, id: int) -> Response:
+        user = self.find(id)
 
-    def patch(self, id):
         args = user_parser(False).parse_args()
-        obj = self.find(id)
-
         for key in args:
             if args[key]:
-                setattr(obj, key, args[key])
+                setattr(user, key, args[key])
+        
         try:
             app.db.session.commit()
         except IntegrityError:
             return {"message": "User with same email or username already exists"}, 409
         
-        return jsonify(data = schema.dump(obj))
+        return jsonify(data = schema.dump(user))
+
+    def delete(self, id: int) -> Response:
+        user = self.find(id)
+        
+        app.db.session.delete(user)
+        app.db.session.commit()
+        
+        return jsonify(data = schema.dump(user))
