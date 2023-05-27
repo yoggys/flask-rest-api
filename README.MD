@@ -25,7 +25,7 @@ options:
   --dev        Run server in development mode
 ```
 
-Example:
+### Example
 
 ```bash
 python3 run.py --dev --host localhost --port 8080
@@ -39,7 +39,7 @@ python3 -m pytest ./tests/tests.py
 
 ### Output
 
-````bash
+```bash
 ================================================== test session starts ===================================================
 platform win32 -- Python 3.10.11, pytest-7.3.1, pluggy-1.0.0
 rootdir: ...\flask-rest-api\tests
@@ -67,20 +67,20 @@ tests.py .......                                                                
 │   ├── tests
 │   │   └── tests.py
 │   └── run.py
-````
+```
 
 ## API
 
 ### Users
 
+Methods: `GET`, `POST`, `DELETE`
+
 ```bash
 api/v1/users/ - Users list
 ```
 
-Methods: `GET`, `POST`, `DELETE`
+Methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`
 
 ```bash
 api/v1/users/\<int:user_id\> - User by id
 ```
-
-Methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`
