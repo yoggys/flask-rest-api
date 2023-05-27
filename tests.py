@@ -2,6 +2,7 @@ import asyncio
 import os
 import random
 import subprocess
+import time
 from secrets import token_hex
 
 import aiohttp
@@ -18,6 +19,7 @@ def run_server():
     return subprocess.Popen(["python", "run.py"], cwd=os.getcwd(), shell=True)
 
 process = run_server()
+time.sleep(3)
 
 @pytest.fixture(scope='session')
 def my_cleanup_fixture(request):
