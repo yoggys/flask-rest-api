@@ -15,13 +15,17 @@ class TestArgs:
     port = 5000
     
 args = TestArgs()
-@pytest.fixture(scope="session")
-def server():
-    process = subprocess.Popen(["python", "run.py"], cwd=os.getcwd(), shell=True)
-    time.sleep(3)
-    yield
-    process.terminate()
-    process.wait()
+def run_server():
+    return subprocess.Popen(["python3", "run.py"], cwd=os.getcwd(), shell=True)
+
+process = run_server()
+time.sleep(3)
+
+@pytest.fixture(scope='session')
+def my_cleanup_fixture(request):
+    if process:
+        process.terminate()
+        process.wait()
     
 ENDPOINT = "http://{}:{}/api/v1/users".format(args.host, args.port)
 ENDPOINT_ENTRY = ENDPOINT + "/{}"
