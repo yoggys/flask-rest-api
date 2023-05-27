@@ -34,7 +34,8 @@ python3 run.py --dev --host localhost --port 8080
 ## Tests
 
 ```bash
-python3 run.py --dev & python3 -m pytest ./tests/tests.py
+# Run server, wait for 3 seconds to make sure server started and run tests
+python3 run.py --dev & sleep 3 python3 -m pytest ./tests/tests.py
 ```
 
 ### Output
