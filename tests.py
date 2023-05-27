@@ -15,14 +15,11 @@ class TestArgs:
     port = 5000
     
 args = TestArgs()
-def run_server():
-    return subprocess.Popen(["python", "run.py"], cwd=os.getcwd(), shell=True)
-
-process = run_server()
-time.sleep(3)
-
-@pytest.fixture(scope='session')
-def my_cleanup_fixture(request):
+@pytest.fixture(scope="session")
+def server():
+    process = subprocess.Popen(["python", "run.py"], cwd=os.getcwd(), shell=True)
+    time.sleep(3)
+    yield
     process.terminate()
     process.wait()
     
@@ -70,7 +67,6 @@ async def test_delete_all():
     async with aiohttp.ClientSession() as cs:
         await deleteAll(cs)
         data = await getAll(cs)
-        print(data)
         
         assert len(data.get("data", [])) == 0
         
