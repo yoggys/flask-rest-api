@@ -38,4 +38,4 @@ jobs:
         run: |
           python run.py --dev &
           sleep 3
-          pytest tests.py
+          pytest
