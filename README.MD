@@ -8,7 +8,7 @@ Tested on `Windows 10` with `Python 3.10.4`. If any error occurs, [download](htt
 git clone https://github.com/yoggys/flask-rest-api
 cd flask-rest-api
 pip install -r requirements.txt
-python3 run.py
+python run.py
 ```
 
 ### Optional arguments
@@ -28,14 +28,14 @@ options:
 ### Example
 
 ```bash
-python3 run.py --dev --host localhost --port 8080
+python run.py --dev --host localhost --port 8080
 ```
 
 ## Tests
 
 ```bash
 # Run server, wait for 3 seconds to make sure server started and run tests
-python3 run.py --dev & sleep 3 python3 -m pytest ./tests/tests.py
+python run.py --dev & sleep 3 && pytest
 ```
 
 ### Output
